@@ -38,9 +38,9 @@ class BasecampBase(object):
         If post_args is passed as a keyword argument, assume that
         it is a POST request.
         """
-        if kwargs.get('post_args'):
+        if kwargs.get('post_data'):
             # it's a post
-            req = requests.post(url, data=kwargs['post_args'])
+            req = requests.post(url, data=kwargs['post_data'])
         else:
             if kwargs.get('headers'):
                 req = requests.get(url, headers=kwargs['headers'])
@@ -50,7 +50,7 @@ class BasecampBase(object):
         if req.status_code != 200:
             raise BasecampAPIError(req.content)
 
-        return req.content
+        return req
 
 
 class BasecampAuth(BasecampBase):
@@ -106,10 +106,10 @@ class BasecampAuth(BasecampBase):
             'client_secret': self.client_secret
         })
 
-        url = '{0}.authorization/token'.format(self.auth_base_url)
+        url = '{0}authorization/token'.format(self.auth_base_url)
         request = self.post(url, post_data=self.query_args)
 
-        data = json.loads(request.content)
+        data = json.loads(request.content)  # pylint: disable=E1103
         return data
 
     def account_info(self, access_token):
@@ -122,7 +122,7 @@ class BasecampAuth(BasecampBase):
         }
 
         request = self.get(url, headers=headers)
-        data = json.loads(request.content)
+        data = json.loads(request.content)  # pylint: disable=E1103
 
         return data
 

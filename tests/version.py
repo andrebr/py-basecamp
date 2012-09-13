@@ -3,7 +3,7 @@ Test get_version
 """
 import unittest
 import basecamp
-from basecamp import get_version
+from basecamp.version import get_version
 
 
 class GetVersionTest(unittest.TestCase):
@@ -29,7 +29,7 @@ class GetVersionTest(unittest.TestCase):
         Testing short version, eg: 0.1, 0.1.1, etc.
         """
         for version in self.versions:
-            basecamp.VERSION = version[0]
+            basecamp.version.VERSION = version[0]
             self.assertEqual(
                 get_version('short'), version[1])
 
@@ -38,6 +38,6 @@ class GetVersionTest(unittest.TestCase):
         Test full version, eg: 0.1.1a1
         """
         for version in self.versions:
-            basecamp.VERSION = version[0]
+            basecamp.version.VERSION = version[0]
             self.assertEqual(
                 get_version('full'), version[2])
