@@ -1,1 +1,6 @@
+"""
+Import tests
+"""
+# pylint: disable=W0401
 from .version import *
+from .auth import *

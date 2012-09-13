@@ -1,6 +1,8 @@
 """
 Get package version
 """
+from .api import BasecampAuth, Basecamp
+
 
 VERSION = (0, 0, 1, 'alpha', 0)
 
