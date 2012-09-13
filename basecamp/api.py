@@ -1,8 +1,8 @@
 """
 Basecamp API
 """
-import json
 import requests
+from .exceptions import BasecampAPIError
 
 
 class Base(object):

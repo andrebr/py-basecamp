@@ -1,6 +1,8 @@
 """ Auth """
-from .api import Base
 import urllib
+import json
+
+from .api import Base
 
 
 class Auth(Base):
