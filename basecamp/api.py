@@ -22,6 +22,16 @@ class Base(object):
         """
         return self._do_request(url, post_data=post_data)
 
+    def put(self, url):
+        """
+        Perform a PUT request.
+        """
+
+    def delete(self, url):
+        """
+        Perform a DELETE request.
+        """
+
     # pylint: disable=R0201,E1103
     def _do_request(self, url, **kwargs):
         """
