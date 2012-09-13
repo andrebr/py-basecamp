@@ -8,7 +8,7 @@ import basecamp
 
 class AuthTests(unittest.TestCase):
     """
-    Test the BasecampAuth class.
+    Test the Auth class.
     """
 
     client_id = '12345asdfg'
@@ -19,14 +19,14 @@ class AuthTests(unittest.TestCase):
         """
         Test creating the launchpad url.
         """
-        auth = basecamp.BasecampAuth(
+        auth = basecamp.Auth(
             self.client_id, self.client_secret, self.return_url)
 
         # pylint: disable=C0301
         self.assertEquals(auth.launchpad_url,
             'https://launchpad.37signals.com/authorization/new?redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fauth-return%2F&type=web_server&client_id=12345asdfg')
 
-    @fudge.patch('basecamp.BasecampAuth.get_token')
+    @fudge.patch('basecamp.Auth.get_token')
     def test_get_token(self, get_token):
         """
         Test getting the token from a request.
@@ -44,7 +44,7 @@ class AuthTests(unittest.TestCase):
                 "zA7bBd7Q==--9dcc4400b03"
         }
 
-        auth = basecamp.BasecampAuth(
+        auth = basecamp.Auth(
             self.client_id, self.client_secret, self.return_url)
         mock_token = auth.get_token\
             .expects_call()\
@@ -57,7 +57,7 @@ class AuthTests(unittest.TestCase):
             return_data['access_token']
         )
 
-    @fudge.patch('basecamp.BasecampAuth.get_token')
+    @fudge.patch('basecamp.Auth.get_token')
     def test_expired_token(self, get_token):
         """
         Test an expired token.
@@ -66,7 +66,7 @@ class AuthTests(unittest.TestCase):
             "error": "expired_verification_code"
         }
 
-        auth = basecamp.BasecampAuth(
+        auth = basecamp.Auth(
             self.client_id, self.client_secret, self.return_url)
         mock_token = auth.get_token\
             .expects_call()\

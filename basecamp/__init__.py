@@ -1,4 +1,4 @@
 """
 Get package version
 """
-from .api import BasecampAuth, Basecamp
+from .auth import Auth
