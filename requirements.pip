@@ -1,3 +1,4 @@
 Sphinx  # for building docs
 nose  # Run tests
 fudge > 1.0  # mocking request calls.
+requests>=0.14.0
