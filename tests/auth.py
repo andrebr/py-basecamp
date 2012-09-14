@@ -51,3 +51,24 @@ class Auth(unittest.TestCase):
 
             fake_post.is_callable().returns(mock)
             self.auth.get_token('foobar')
+
+    def test_successful_token(self):
+        """
+        Get a good token.
+        """
+
+        content = {
+            'access_token': 'abceasyas123==--1d3c',
+            'expires_in': 1209600,
+            'refresh_token': 'yICSwF7ImV4c==--zxvf'
+        }
+
+        with fudge.patch('basecamp.api.Base.post') as fake_post:
+            mock = RequestMock
+            mock.status_code = 200
+            mock.content = json.dumps(content)
+
+            fake_post.is_callable().returns(mock)
+            self.assertEquals(
+                self.auth.get_token('foobar'),
+                content)
