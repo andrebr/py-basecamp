@@ -2,7 +2,6 @@
 Basecamp API
 """
 import requests
-from .exceptions import BasecampAPIError
 
 
 class Base(object):
@@ -48,8 +47,5 @@ class Base(object):
                 req = requests.get(url, headers=kwargs['headers'])
             else:
                 req = requests.get(url)
-
-        if req.status_code != 200:
-            raise BasecampAPIError(req.content)
 
         return req

@@ -6,7 +6,7 @@ import basecamp
 from basecamp.version import get_version
 
 
-class GetVersionTest(unittest.TestCase):
+class GetVersion(unittest.TestCase):
     """
     Tests getting the version.
     """

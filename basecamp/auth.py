@@ -3,6 +3,7 @@ import urllib
 import json
 
 from .api import Base
+from .exceptions import BasecampAPIError
 
 
 class Auth(Base):
@@ -57,12 +58,13 @@ class Auth(Base):
             'code': code,
             'client_secret': self.client_secret
         })
-
         url = '{0}authorization/token'.format(self.auth_base_url)
         request = self.post(url, post_data=self.query_args)
 
-        data = json.loads(request.content)  # pylint: disable=E1103
-        return data
+        if request.status_code == 200:
+            return json.loads(request.content)  # pylint: disable=E1103
+
+        raise BasecampAPIError(json.loads(request.content).get('error'))
 
     def account_info(self, access_token):
         """
