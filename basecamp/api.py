@@ -2,6 +2,8 @@
 Basecamp API
 """
 import requests
+import urllib
+from .exceptions import BasecampAPIError
 
 
 class Base(object):
@@ -41,11 +43,35 @@ class Base(object):
         """
         if kwargs.get('post_data'):
             # it's a post
-            req = requests.post(url, data=kwargs['post_data'])
+            request = requests.post(url, data=kwargs['post_data'])
         else:
             if kwargs.get('headers'):
-                req = requests.get(url, headers=kwargs['headers'])
+                request = requests.get(url, headers=kwargs['headers'])
             else:
-                req = requests.get(url)
+                request = requests.get(url)
 
-        return req
+        if request.status_code == 404:
+            raise BasecampAPIError('404')
+
+        return request
+
+
+class Basecamp(Base):
+
+    endpoint = None
+
+    def __init__(self, account_url, access_token, refresh_token=None):
+        self.account_url = account_url
+        self.access_token = access_token
+        self.refresh_token = refresh_token
+
+    def construct_url(self):
+        """
+        Construct a url with the account url, complete API endpoint and
+        the access token as a query string.
+        """
+        return '{0}/{1}?{2}'.format(
+            self.account_url,
+            self.endpoint,
+            urllib.urlencode({'access_token': self.access_token})
+        )

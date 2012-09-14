@@ -66,16 +66,41 @@ class Auth(Base):
 
         raise BasecampAPIError(json.loads(request.content).get('error'))
 
-    def account_info(self, access_token):
-        """
-        Get account info on the currently authenticated user.
-        """
+    def _do_authorization_request(self, access_token):
         url = '{0}authorization.json'.format(self.auth_base_url)
         headers = {
             'Authorization': 'Bearer {0}'.format(access_token)
         }
 
-        request = self.get(url, headers=headers)
-        data = json.loads(request.content)  # pylint: disable=E1103
+        return self.get(url, headers=headers)
 
-        return data
+    def get_identity(self, access_token):
+        """
+        Get the users identity.
+        """
+        request = self._do_authorization_request(access_token)
+
+        if request.status_code == 200:
+            return request.content.get('identity')
+
+        raise BasecampAPIError(json.loads(request.content).get('error'))
+
+    def get_accounts(self, access_token, account_type='bcx'):
+        """
+        Get 37signals accounts for the authenticated user.
+        """
+        request = self._do_authorization_request(access_token)
+
+        if request.status_code == 200:
+            if account_type == 'all':
+                return json.loads(request.content.get('accounts'))
+            else:
+                _accounts = []
+
+                for account in json.loads(request.content).get('accounts'):
+                    if account['product'] == account_type:
+                        _accounts.append(account)
+
+                return _accounts
+
+        raise BasecampAPIError(json.loads(request.content).get('error'))
