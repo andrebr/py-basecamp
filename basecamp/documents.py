@@ -10,7 +10,7 @@ class Document(Base):
     """
     Actions on a document
     """
-    def get(self, id=None, project=None):
+    def fetch(self, document_id=None, project=None):
         """
         Get a specific document, or a list of documents, either
         by project, or globa within the account.
@@ -21,12 +21,12 @@ class Document(Base):
         Create a new document.
         """
 
-    def update(self, id, title, content):
+    def update(self, document_id, title, content):
         """
         Update a document.
         """
 
-    def delete(self, id):
+    def delete(self, document_id):
         """
         Delete a document.
         """

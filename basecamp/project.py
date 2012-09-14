@@ -10,7 +10,7 @@ class Project(Base):
     """
     Operations on Projects in the API
     """
-    def get(self, project=None):
+    def fetch(self, project=None):
         """
         Get a project, or a list of projects.
         """
