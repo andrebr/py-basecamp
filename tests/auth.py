@@ -4,7 +4,7 @@ Basecamp Auth tests
 import json
 import fudge
 import unittest
-import basecamp
+import basecamp.api
 
 from nose.tools import raises
 
@@ -24,7 +24,7 @@ class Auth(unittest.TestCase):
     # pylint: disable=C0103
     def setUp(self):
         super(Auth, self).setUp()
-        self.auth = basecamp.Auth(
+        self.auth = basecamp.api.Auth(
             self.client_id, self.client_secret, self.return_url)
 
     def test_get_launchpad_url(self):
@@ -41,7 +41,7 @@ class Auth(unittest.TestCase):
         """
         Test getting the token, but with a bad response.
         """
-        with fudge.patch('basecamp.api.Base.post') as fake_post:
+        with fudge.patch('basecamp.base.Base.post') as fake_post:
             mock = RequestMock
             mock.status_code = 400
             mock.content = json.dumps({
@@ -62,7 +62,7 @@ class Auth(unittest.TestCase):
             'refresh_token': 'yICSwF7ImV4c==--zxvf'
         }
 
-        with fudge.patch('basecamp.api.Base.post') as fake_post:
+        with fudge.patch('basecamp.base.Base.post') as fake_post:
             mock = RequestMock
             mock.status_code = 200
             mock.content = json.dumps(content)
