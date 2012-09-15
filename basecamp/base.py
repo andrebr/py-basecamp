@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import requests
+import urllib
+from .exceptions import ImproperlyConfigured
 
 
 class Base(object):
@@ -47,3 +49,29 @@ class Base(object):
                 req = requests.get(url)
 
         return req
+
+class Basecamp(Base):
+
+    endpoint = None
+
+    def __init__(self, account_url, access_token, refresh_token=None):
+        self.account_url = account_url
+        self.access_token = access_token
+        self.refresh_token = refresh_token
+
+    def construct_url(self):
+        """
+        Construct a url with the account url, complete API endpoint and
+        the access token as a query string.
+        """
+        if not self.endpoint:
+            raise ImproperlyConfigured('No endpoint has been set.')
+
+        # strip slashes from the endpoint.
+        self.endpoint = self.endpoint.strip('/')
+
+        return '{0}/{1}?{2}'.format(
+            self.account_url,
+            self.endpoint,
+            urllib.urlencode({'access_token': self.access_token})
+        )

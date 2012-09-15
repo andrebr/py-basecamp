@@ -10,3 +10,4 @@ getting the version and handling dependencies in setup.py.
 """
 
 from .auth import Auth
+from .base import Basecamp
