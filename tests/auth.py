@@ -27,7 +27,6 @@ class Auth(unittest.TestCase):
         self.auth = basecamp.Auth(
             self.client_id, self.client_secret, self.return_url)
 
-
     def test_get_launchpad_url(self):
         """
         Test creating the launchpad url.

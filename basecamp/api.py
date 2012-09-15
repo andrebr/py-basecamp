@@ -3,7 +3,7 @@ Basecamp API
 """
 import requests
 import urllib
-from .exceptions import BasecampAPIError
+from .exceptions import BasecampAPIError, ImproperlyConfigured
 
 
 class Base(object):
@@ -70,6 +70,12 @@ class Basecamp(Base):
         Construct a url with the account url, complete API endpoint and
         the access token as a query string.
         """
+        if not self.endpoint:
+            raise ImproperlyConfigured('No endpoint has been set.')
+
+        # strip slashes from the endpoint.
+        self.endpoint = self.endpoint.strip('/')
+
         return '{0}/{1}?{2}'.format(
             self.account_url,
             self.endpoint,
