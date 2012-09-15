@@ -50,6 +50,7 @@ class Base(object):
 
         return req
 
+
 class Basecamp(Base):
 
     endpoint = None

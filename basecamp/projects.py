@@ -4,7 +4,7 @@ Project class
 https://github.com/37signals/bcx-api/blob/master/sections/projects.md
 """
 import json
-from .api import Basecamp
+from .base import Basecamp
 from .exceptions import BasecampAPIError
 
 

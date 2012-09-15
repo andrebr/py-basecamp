@@ -10,4 +10,5 @@ getting the version and handling dependencies in setup.py.
 """
 
 from .auth import Auth
+from .projects import Project
 from .base import Basecamp
