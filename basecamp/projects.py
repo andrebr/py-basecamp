@@ -45,7 +45,7 @@ class Project(Basecamp):
         )
 
         request = self.post(self.construct_url(),
-            post_data=json.dumps(data))
+            payload=json.dumps(data))
 
         if request.status_code == 201:
             return json.loads(request.content)
@@ -61,13 +61,31 @@ class Project(Basecamp):
         """
         Update a project
         """
+        self.endpoint = 'projects/{0}'.format(project_id)
+
+        data = dict(
+            name=name,
+            description=description
+        )
+
+        request = self.put(self.construct_url(),
+            payload=json.dumps(data))
+
+        if request.status_code == 200:
+            return json.loads(request.content)
+        elif request.status_code == 403:
+            # not allowed to create projects
+            # or reached the project limit
+            raise BasecampAPIError()
+
+        raise BasecampAPIError(request.content)
 
     def archive(self, project_id, archive=True):
         """
         Archive or unarchive a project
         """
 
-    def delete(self, project):
+    def delete(self, project_id):
         """
         Delete a project
         """
