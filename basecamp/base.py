@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import requests
 import urllib
-from .exceptions import ImproperlyConfigured
+from .exceptions import (ImproperlyConfigured, BasecampAPIError)
 
 
 class Base(object):
@@ -39,15 +39,25 @@ class Base(object):
         If post_args is passed as a keyword argument, assume that
         it is a POST request.
         """
+        headers = {
+            'Content-type': 'application/json; charset=utf-8'
+        }
+
         if kwargs.get('post_data'):
-            # it's a post
-            req = requests.post(url, data=kwargs['post_data'])
+            req = requests.post(url,
+                data=kwargs['post_data'],
+                headers=headers)
         else:
             if kwargs.get('headers'):
-                req = requests.get(url, headers=kwargs['headers'])
+                headers.update(kwargs['headers'])
+                req = requests.get(url, headers=headers)
             else:
                 req = requests.get(url)
 
+        if req.status_code == 500:
+            raise BasecampAPIError('An unexpected error occurred.')
+        elif req.status_code == 429:
+            raise BasecampAPIError('Too many requests.')
         return req
 
 

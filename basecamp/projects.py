@@ -37,6 +37,25 @@ class Project(Basecamp):
         """
         Create a project.
         """
+        self.endpoint = 'projects'
+
+        data = dict(
+            name=name,
+            description=description
+        )
+
+        request = self.post(self.construct_url(),
+            post_data=json.dumps(data))
+
+        if request.status_code == 201:
+            return json.loads(request.content)
+        elif request.status_code == 403:
+            # not allowed to create projects
+            # or reached the project limit
+            raise BasecampAPIError()
+
+        raise BasecampAPIError(request.content)
+
 
     def update(self, project_id, name, description):
         """
