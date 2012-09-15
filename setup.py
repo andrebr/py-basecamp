@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
-from basecamp.version import get_version
+from basecamp import get_version
 
 setup(
     name='basecamp',
