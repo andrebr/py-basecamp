@@ -1,8 +1,11 @@
-""" Auth """
+# -*- coding: utf-8 -*-
+"""
+
+"""
 import urllib
 import json
 
-from .api import Base
+from .base import Base
 from .exceptions import BasecampAPIError
 
 
