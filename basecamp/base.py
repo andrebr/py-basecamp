@@ -43,10 +43,15 @@ class Base(object):
 
         return self._check_response_code(request)
 
-    def delete(self, url):
+    def delete(self, url, payload=None):
         """
         Perform a DELETE request.
         """
+        request = requests.delete(url,
+            data=payload,
+            headers=self.headers)
+
+        return self._check_response_code(request)
 
     def _check_response_code(self, request):
         """

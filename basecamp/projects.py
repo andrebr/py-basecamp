@@ -56,7 +56,6 @@ class Project(Basecamp):
 
         raise BasecampAPIError(request.content)
 
-
     def update(self, project_id, name, description):
         """
         Update a project
@@ -84,8 +83,28 @@ class Project(Basecamp):
         """
         Archive or unarchive a project
         """
+        self.endpoint = 'projects/{0}'.format(project_id)
+        data = dict(archived=archive)
+        request = self.put(self.construct_url(),
+            payload=json.dumps(data))
+
+        if request.status_code == 200:
+            return json.dumps(request.content)
+        elif request.status_code == 403:
+            raise BasecampAPIError()
+
+        raise BasecampAPIError()
 
     def delete(self, project_id):
         """
         Delete a project
         """
+        self.endpoint = 'projects/{0}'.format(project_id)
+        request = self.delete(self.construct_url())
+
+        if request.status_code == 204:
+            return True
+        elif request.status_code == 403:
+            raise BasecampAPIError()
+
+        raise BasecampAPIError()
