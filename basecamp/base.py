@@ -17,7 +17,8 @@ class Base(object):
         """
         Perform a GET request.
         """
-        self.headers.update(headers)
+        if headers:
+            self.headers.update(headers)
         request = requests.get(url, headers=self.headers)
 
         return self._check_response_code(request)
