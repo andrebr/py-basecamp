@@ -5,3 +5,4 @@ Import tests
 from .version import *
 from .auth import Auth
 from .base import BuildURLTests
+from .projects import Projects

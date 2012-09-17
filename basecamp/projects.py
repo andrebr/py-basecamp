@@ -37,7 +37,6 @@ class Project(Basecamp):
         """
         Create a project.
         """
-        self.endpoint = 'projects'
 
         data = dict(
             name=name,
