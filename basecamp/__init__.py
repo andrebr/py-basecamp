@@ -12,6 +12,9 @@ made by Kenneth Reitz.
 The py-basecamp source code is hosted on GitHub:
 https://github.com/ngenworks/py-basecamp/
 
+Documentation can be found at Read the Docs:
+http://basecamp.readthedocs.org/en/latest/index.html
+
 Test coverage results can be found at
 https://secure.travis-ci.org/#!/ngenworks/py-basecamp
 
