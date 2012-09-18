@@ -1,28 +1,44 @@
 # -*- coding: utf-8 -*-
 """
-Basecamp API Wrapper.
+====================
+Basecamp API Wrapper
+====================
 
-basecamp
---------
-
-Basecamp is a wrapper around the Basecamp Next API and makes use
+Basecamp is a wrapper around the
+`Basecamp Next API <https://github.com/37signals/bcx-api>`_ and makes use
 of the `Requests <https://github.com/kennethreitz/requests>`_ library
 made by Kenneth Reitz.
 
-Basic usage:
+The py-basecamp source code is hosted on GitHub:
+https://github.com/ngenworks/py-basecamp/
 
-    >>> import basecamp.api
-    >>> auth = basecamp.api.Auth(client_url, client_secret, redirect_url)
-    >>> launchpad_url = auth.launchpad_url
+Test coverage results can be found at
+https://secure.travis-ci.org/#!/ngenworks/py-basecamp
 
-Redirect to the ``launchpad_url`` in your application
-after the user authenticates, they are redirected back to the
-redirect_url location, and a `code` GET variable will be present
-to exchange for a token.
 
-    >>> import basecamp.api
-    >>> auth = basecamp.api.Auth(client_url, client_secret, redirect_url)
-    >>> token = auth.get_token()
+Automatic Installation
+----------------------
+
+Install the master branch from GitHub
+
+::
+
+    pip -e git+git://github.com/ngenworks/py-basecamp.git#egg=basecamp
+
+
+Manual Installation
+-------------------
+
+Download: https://github.com/ngenworks/py-basecamp/tarball/master
+
+::
+
+    tar zxvf py-basecamp.tgz
+    cd py-basecamp
+    python setup.py install
+
+sudo may be needed to install in the system-wide Python installation.
+Using in a `virtualenv <http://www.virtualenv.org/>`_ is recommended.
 """
 
 VERSION = (0, 0, 1, 'alpha', 0)

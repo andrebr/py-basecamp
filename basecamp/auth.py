@@ -1,5 +1,73 @@
 # -*- coding: utf-8 -*-
 """
+====
+Auth
+====
+
+The Basecamp API follows draft 5 of the `oAuth 2 spec
+<http://tools.ietf.org/html/draft-ietf-oauth-v2>`_
+
+In short, this is how it works:
+
+* Ask for access
+* A user authenticates with their Basecamp account
+* Get a verification code.
+* Trade that code in for an access token.
+* Start performing authenticated requests with said token.
+
+-----------
+Basic usage
+-----------
+
+    >>> import basecamp.api
+    >>> auth = basecamp.api.Auth(client_url, client_secret, redirect_url)
+    >>> launchpad_url = auth.launchpad_url
+
+Redirect to the ``launchpad_url`` in your application
+after the user authenticates, they are redirected back to the
+redirect_url location, and a `code` GET variable will be present
+to exchange for a token.
+
+    >>> import basecamp.api
+    >>> auth = basecamp.api.Auth(client_url, client_secret, redirect_url)
+    >>> token = auth.get_token()
+
+
+--------
+Examples
+--------
+
+Here's a basic example of how this could work in a Flask application.
+
+::
+
+    import basecamp.api
+    from secrets import client_id, client_secret, return_url
+    from flask import Flask, redirect, request
+
+    app = Flask(__name__)
+
+    @app.route('/basecamp-login/')
+    def basecamp_login():
+        '''
+        Redirect user to basecamp to authenticate.
+        '''
+        auth = basecamp.api.Auth(client_id, client_secret, return_url)
+
+        return redirect(auth.launchpad_url)
+
+    @app.route('/auth-return/')
+    def auth_return():
+        '''
+        Get the code and exchange it for an access_token
+        '''
+        code = request.args.get('code')
+
+        auth = basecamp.api.Auth(client_id, client_secret, return_url)
+
+        token = auth.get_token(code)
+
+        # do things now that you have a token.
 
 """
 import urllib
@@ -37,8 +105,8 @@ class Auth(Base):
 
         For instance, in a Django app, one could do something like:
 
-        auth = BasecampAuth(client_id, client_secret, redirect_uri)
-        auth.get_launchpad_url()
+        >>> auth = BasecampAuth(client_id, client_secret, redirect_uri)
+        >>> auth.get_launchpad_url
         """
         return '{0}authorization/new?{1}'.format(
             self.auth_base_url,
@@ -49,7 +117,7 @@ class Auth(Base):
         This function requests the auth token from basecamp after
         oAuth has happened and the user has approved the application.
 
-        :param code: the code returned from :method:`launchpad_url`
+        :param code: the code returned from :meth:`launchpad_url`
 
         The response should contain the following:
 
@@ -80,6 +148,19 @@ class Auth(Base):
     def get_identity(self, access_token):
         """
         Get the users identity.
+
+        As per the `docs <https://github.com/37signals/api/blob/master/sections/authentication.md>`_:
+
+            An identity is **NOT** used for determining who this user is
+            within a specific application. The id field should NOT be used for
+            submitting data within any application's API. This field can be
+            used to get a user's name and email address quickly, and the id
+            field could be used for caching on a cross-application basis if
+            needed.
+
+
+        :param access_token: access token obtained from :meth:`get_token`
+        :rtype: dictionary
         """
         request = self._do_authorization_request(access_token)
 
