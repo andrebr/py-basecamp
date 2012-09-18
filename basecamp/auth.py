@@ -105,8 +105,10 @@ class Auth(Base):
 
         For instance, in a Django app, one could do something like:
 
-        >>> auth = BasecampAuth(client_id, client_secret, redirect_uri)
-        >>> auth.get_launchpad_url
+        >>> import basecamp.api
+        >>> from django import http
+        >>> auth = basecamp.api.Auth(client_id, client_secret, redirect_uri)
+        >>> http.HttpResponseRedirect(auth.get_launchpad_url)
         """
         return '{0}authorization/new?{1}'.format(
             self.auth_base_url,
