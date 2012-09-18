@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Documents class
+=========
+Documents
+=========
+
+
 
 https://github.com/37signals/bcx-api/blob/master/sections/documents.md
 """
@@ -11,10 +15,15 @@ class Document(Base):
     """
     Actions on a document
     """
-    def fetch(self, document_id=None, project=None):
+    def fetch(self, document_id=None, project_id=None):
         """
         Get a specific document, or a list of documents, either
-        by project, or globa within the account.
+        by project, or globally within the users account.
+
+        :param document_id:
+        :param project_id:
+
+
         """
 
     def create(self, title, content):
@@ -27,7 +36,7 @@ class Document(Base):
         Update a document.
         """
 
-    def delete(self, document_id):
+    def remove(self, document_id):
         """
         Delete a document.
         """
