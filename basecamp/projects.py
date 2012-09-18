@@ -88,15 +88,20 @@ class Project(Basecamp):
             payload=json.dumps(data))
 
         if request.status_code == 200:
-            return json.dumps(request.content)
+            json_data = json.loads(request.content)
+
+            if archive and not json_data.get('archived'):
+                # it should have been archived.
+                raise BasecampAPIError('The project was not archived.')
+            return json_data
         elif request.status_code == 403:
             raise BasecampAPIError()
 
         raise BasecampAPIError()
 
-    def delete(self, project_id):
+    def remove(self, project_id):
         """
-        Delete a project
+        Remove a project
         """
         self.endpoint = 'projects/{0}'.format(project_id)
         request = self.delete(self.construct_url())

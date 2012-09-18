@@ -178,8 +178,8 @@ class Projects(unittest.TestCase):
                 "updated_at": None
             },
             "starred": False,
-             "id": 9,
-             "name": "test"
+            "id": 9,
+            "name": "test"
         }
 
         with fudge.patch('basecamp.base.Base.get') as fake_get:
@@ -254,20 +254,96 @@ class Projects(unittest.TestCase):
 
             project.update(1, 'foobar', 'something')
 
-    # def test_archive(self):
-    #     """
-    #     Archive a project
-    #     """
-    #     self.assertTrue(True)
+    def test_archive(self):
+        """
+        Archive a project
+        """
+        response = {
+            'id': 9,
+            'name': 'test',
+            'description': 'some test',
+            "archived": True,
+        }
 
-    # def test_unarchive(self):
-    #     """
-    #     Unarchive a project
-    #     """
-    #     self.assertTrue(True)
+        with fudge.patch('basecamp.base.Base.put') as fake_put:
+            mock = RequestMock
+            mock.status_code = 200
+            mock.content = json.dumps(response)
+            fake_put.is_callable().returns(mock)
 
-    # def test_delete(self):
-    #     """
-    #     Delete a project
-    #     """
-    #     self.assertTrue(True)
+            project = basecamp.api.Project(
+                self.url, self.token, self.refresh_token)
+
+            self.assertEquals(project.archive(9, archive=True), response)
+
+    @raises(BasecampAPIError)
+    def test_archive_but_not_archived(self):
+        """
+        Test archiving, but what happens if it is not archived.
+
+        I'm sure sure if this is valid to test, but it might make sense.
+        Regardless, here we go.
+        """
+        response = {
+            'id': 9,
+            'name': 'test',
+            'description': 'some test',
+            "archived": False,
+        }
+
+        with fudge.patch('basecamp.base.Base.put') as fake_put:
+            mock = RequestMock
+            mock.status_code = 200
+            mock.content = json.dumps(response)
+            fake_put.is_callable().returns(mock)
+
+            project = basecamp.api.Project(
+                self.url, self.token, self.refresh_token)
+
+            project.archive(9, archive=True)
+
+    @raises(BasecampAPIError)
+    def test_archive_no_permissions(self):
+        """
+        Ensure an exception is rasied in when a user who does not have
+        permission to archive a project tries to do so.
+        """
+        with fudge.patch('basecamp.base.Base.put') as fake_put:
+            mock = RequestMock
+            mock.status_code = 403
+            fake_put.is_callable().returns(mock)
+
+            project = basecamp.api.Project(
+                self.url, self.token, self.refresh_token)
+
+            self.assertEquals(project.archive(9, archive=True), response)
+
+    def test_delete(self):
+        """
+        Delete a project
+        """
+        with fudge.patch('basecamp.base.Base.delete') as fake_delete:
+            mock = RequestMock
+            mock.status_code = 204
+            fake_delete.is_callable().returns(mock)
+
+            project = basecamp.api.Project(
+                self.url, self.token, self.refresh_token)
+
+            self.assertTrue(project.remove(9))
+
+    @raises(BasecampAPIError)
+    def test_delete_no_perissions(self):
+        """
+        Ensure an exception is raised when a user does not have permission to
+        delete a project.
+        """
+        with fudge.patch('basecamp.base.Base.delete') as fake_delete:
+            mock = RequestMock
+            mock.status_code = 403
+            fake_delete.is_callable().returns(mock)
+
+            project = basecamp.api.Project(
+                self.url, self.token, self.refresh_token)
+
+            self.assertTrue(project.remove(9))
