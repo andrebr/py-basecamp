@@ -118,6 +118,7 @@ class Auth(Base):
         oAuth has happened and the user has approved the application.
 
         :param code: the code returned from :meth:`launchpad_url`
+        :rtype: dictionary
 
         The response should contain the following:
 
@@ -138,6 +139,11 @@ class Auth(Base):
         raise BasecampAPIError(json.loads(request.content).get('error'))
 
     def _do_authorization_request(self, access_token):
+        """
+        Do the authorization request.
+
+        This method is used by ``get_identity`` and ``get_accounts``
+        """
         url = '{0}authorization.json'.format(self.auth_base_url)
         headers = {
             'Authorization': 'Bearer {0}'.format(access_token)
@@ -149,7 +155,8 @@ class Auth(Base):
         """
         Get the users identity.
 
-        As per the `docs <https://github.com/37signals/api/blob/master/sections/authentication.md>`_:
+        As per the `docs <https://github.com/37signals/api/blob/master/\
+        sections/authentication.md>`_:
 
             An identity is **NOT** used for determining who this user is
             within a specific application. The id field should NOT be used for
@@ -157,7 +164,6 @@ class Auth(Base):
             used to get a user's name and email address quickly, and the id
             field could be used for caching on a cross-application basis if
             needed.
-
 
         :param access_token: access token obtained from :meth:`get_token`
         :rtype: dictionary
@@ -172,6 +178,11 @@ class Auth(Base):
     def get_accounts(self, access_token, account_type='bcx'):
         """
         Get 37signals accounts for the authenticated user.
+
+        :param access_token: access token obtained from :meth:`get_token`
+        :param account_type: type of basecamp account to return. Return only \
+            Basecamp Next accounts by default.
+        :rtype: dictionary
         """
         request = self._do_authorization_request(access_token)
 
