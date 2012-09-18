@@ -1,8 +1,15 @@
 """
+========
 Projects
---------
+========
 
-https://github.com/37signals/bcx-api/blob/master/sections/projects.md
+Create, edit, list, delete and archive projects in a Basecamp account.
+
+See `the Basecamp API docs
+<https://github.com/37signals/bcx-api/blob/master/sections/projects.md>`_
+for more info.
+
+An ``access_token`` is needed to perform any tasks within this class.
 """
 
 import json
@@ -19,6 +26,19 @@ class Project(Basecamp):
     def fetch(self, project=None, archived=False):
         """
         Get a project, or a list of projects.
+
+        :param project: project id or None
+        :param archived: True or False - By default, non-archived projects\
+        are not included in the list of projects returned.
+        :rtype dictionary: dictionary of projects see `the following <https://\
+        github.com/37signals/bcx-api/blob/master/sections/\
+        projects.md#get-projects>`_ for the returned structure.
+
+        >>> import basecamp.api
+        >>> account_url = 'https://basecamp.com/12345/api/v1'
+        >>> access_token = 'access_token'
+        >>> api = basecamp.api.Project(account_url, access_token)
+        >>> projects = projects.fetch()
         """
         if archived:
             self.endpoint = 'projects/archived.json'
@@ -37,7 +57,17 @@ class Project(Basecamp):
 
     def create(self, name, description):
         """
-        Create a project.
+        Create a new project in a basecamp account.
+
+        :param name: New project name.
+        :param description: New project description.
+        :rtype dictionary: Project details dictionary.
+
+        >>> import basecamp.api
+        >>> account_url = 'https://basecamp.com/12345/api/v1'
+        >>> access_token = 'access_token'
+        >>> api = basecamp.api.Project(account_url, access_token)
+        >>> projects = projects.create('My Favorites Things', 'John Coltrane')
         """
 
         data = dict(
@@ -59,7 +89,19 @@ class Project(Basecamp):
 
     def update(self, project_id, name, description):
         """
-        Update a project
+        Update an existing basecamp project.
+
+        :param project_id: integer of project id to update.
+        :param name: project name
+        :param description: project description.
+        :rtype dictionary: Dictionary of project details.
+
+        >>> import basecamp.api
+        >>> account_url = 'https://basecamp.com/12345/api/v1'
+        >>> access_token = 'access_token'
+        >>> api = basecamp.api.Project(account_url, access_token)
+        >>> projects = projects.update(675, 'Giant Steps', 'John Coltrane')
+
         """
         self.endpoint = 'projects/{0}'.format(project_id)
 
@@ -82,7 +124,17 @@ class Project(Basecamp):
 
     def archive(self, project_id, archive=True):
         """
-        Archive or unarchive a project
+        Archive or unarchive a project.
+
+        :param project_id: project id to archive or unarchive
+        :param archive: boolean True to archive, False to unarchive
+        :rtype dictionary: Dictionary of project details.
+
+        >>> import basecamp.api
+        >>> account_url = 'https://basecamp.com/12345/api/v1'
+        >>> access_token = 'access_token'
+        >>> api = basecamp.api.Project(account_url, access_token)
+        >>> projects = projects.archive(675, archive=True)
         """
         self.endpoint = 'projects/{0}'.format(project_id)
         data = dict(archived=archive)
@@ -104,6 +156,16 @@ class Project(Basecamp):
     def remove(self, project_id):
         """
         Remove a project
+
+        :param project_id: id of the project to delete.
+        :rtype: True if the project is removed, otherwise \
+        a :class:`BasecampAPIError` exception.
+
+        >>> import basecamp.api
+        >>> account_url = 'https://basecamp.com/12345/api/v1'
+        >>> access_token = 'access_token'
+        >>> api = basecamp.api.Project(account_url, access_token)
+        >>> projects = projects.remove(675)
         """
         self.endpoint = 'projects/{0}'.format(project_id)
         request = self.delete(self.construct_url())
