@@ -31,6 +31,8 @@ class Document(Basecamp):
         elif document_id and project_id:
             self.endpoint = 'projects/{0}/documents/{1}.json'.format(
                 projecdt_id, document_id)
+        else:
+            raise BasecampAPIError()
 
         request = self.get(self.construct_url())
 
