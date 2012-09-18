@@ -9,10 +9,10 @@ Documents
 https://github.com/37signals/bcx-api/blob/master/sections/documents.md
 """
 import json
-from .api import Base
+from .base import Basecamp
 
 
-class Document(Base):
+class Document(Basecamp):
     """
     Actions on a document
     """

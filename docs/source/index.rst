@@ -9,6 +9,7 @@ Contents
 
    auth
    projects
+   documents
 
 
 
