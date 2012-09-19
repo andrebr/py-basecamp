@@ -26,8 +26,9 @@ class Document(Basecamp):
         :param project_id:
         :rtype dictionary: Dictionary of documents, or a single document.
 
-        All documents in the account
-        ----------------------------
+        **Examples:**
+
+        *All documents in the account:*
 
         >>> import basecamp.api
         >>> url = 'https://basecamp.com/1/api/v1'
@@ -36,8 +37,7 @@ class Document(Basecamp):
         >>> documents = basecamp.api.Document(url, token, refresh_token)
         >>> documents.fetch()
 
-        Get a single document
-        ---------------------
+        *Get a single document:*
 
         >>> import basecamp.api
         >>> url = 'https://basecamp.com/1/api/v1'
@@ -46,8 +46,8 @@ class Document(Basecamp):
         >>> documents = basecamp.api.Document(url, token, refresh_token)
         >>> documents.fetch(document_id=123, project_id=123)
 
-        Get documents within a project
-        ------------------------------
+
+        *Get documents within a project:*
 
         >>> import basecamp.api
         >>> url = 'https://basecamp.com/1/api/v1'
@@ -55,6 +55,7 @@ class Document(Basecamp):
         >>> refresh_token = 'bar'
         >>> documents = basecamp.api.Document(url, token, refresh_token)
         >>> documents.fetch(project_id=123)
+
         """
         if not document_id and not project_id:
             self.endpoint = 'documents.json'
