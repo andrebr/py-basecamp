@@ -22,9 +22,26 @@ class Document(Basecamp):
         Get a specific document, or a list of documents, either by project, or
         all documents a user has access to in the basecamp account.
 
-        :param document_id:
-        :param project_id:
+        :param document_id: integer of document
+        :param project_id: integer of project
         :rtype dictionary: Dictionary of documents, or a single document.
+
+        .. note::
+
+            There are three methods of document retrieval.
+
+            1. Global for the account. ``document_id`` and ``project_id``
+               kwargs are omitted
+            2. Documents limited to a specific project.
+               The ``project_id`` kwargs is passed to the method call.
+            3. Details on a specific document.
+               The ``project_id`` and ``document_id`` kwargs are passed
+               to the method call.
+
+        .. warning::
+
+            Passing a ``document_id`` but no ``project_id`` will cause a
+            :class:`BasecampAPIError` exception to be raised.
 
         **Examples:**
 
@@ -37,16 +54,6 @@ class Document(Basecamp):
         >>> documents = basecamp.api.Document(url, token, refresh_token)
         >>> documents.fetch()
 
-        *Get a single document:*
-
-        >>> import basecamp.api
-        >>> url = 'https://basecamp.com/1/api/v1'
-        >>> token = 'foo'
-        >>> refresh_token = 'bar'
-        >>> documents = basecamp.api.Document(url, token, refresh_token)
-        >>> documents.fetch(document_id=123, project_id=123)
-
-
         *Get documents within a project:*
 
         >>> import basecamp.api
@@ -55,6 +62,15 @@ class Document(Basecamp):
         >>> refresh_token = 'bar'
         >>> documents = basecamp.api.Document(url, token, refresh_token)
         >>> documents.fetch(project_id=123)
+
+        *Get details on a single document:*
+
+        >>> import basecamp.api
+        >>> url = 'https://basecamp.com/1/api/v1'
+        >>> token = 'foo'
+        >>> refresh_token = 'bar'
+        >>> documents = basecamp.api.Document(url, token, refresh_token)
+        >>> documents.fetch(document_id=123, project_id=123)
 
         """
         if not document_id and not project_id:
