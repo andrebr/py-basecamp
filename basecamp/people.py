@@ -47,6 +47,8 @@ class Person(Basecamp):
         if not person:
             # get the list.
             self.endpoint = 'people.json'
+        else:
+            self.endpoint = 'people/{0}.json'.format(person)
 
         request = self.get(self.construct_url())
 

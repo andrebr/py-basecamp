@@ -67,4 +67,13 @@ class People(BasecampBaseTest):
 
             self.assertEquals(self.people.fetch(), self.response)
 
+    def test_fetch_single_person(self):
+        """
+        Test fetching a single person.
+        """
+        with fudge.patch('basecamp.base.Base.get') as fake_get:
+            fake_get.is_callable().returns(
+                self.setup_mock(200, self.response[0]))
 
+            self.assertEquals(
+                self.people.fetch(person='me'), self.response[0])
