@@ -8,8 +8,9 @@ Contents
    :maxdepth: 2
 
    auth
-   projects
    documents
+   projects
+   people
 
 
 

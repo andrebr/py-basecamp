@@ -1,0 +1,2 @@
+.. automodule:: basecamp.people
+	:members:
