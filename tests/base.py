@@ -1,6 +1,7 @@
 """
 Test Base.
 """
+import json
 import unittest
 
 from nose.tools import raises
@@ -16,6 +17,22 @@ class RequestMock(object):
     """
     status_code = None
     content = None
+
+
+class BasecampBaseTest(unittest.TestCase):
+    """
+    a base class for other tests to inherit from.
+    """
+    def setup_mock(self, status_code, response=None):
+        """
+        a helper method to setup the mock.
+        """
+        mock = RequestMock
+        mock.status_code = status_code
+        if response:
+            mock.content = json.dumps(response)
+
+        return mock
 
 
 class BuildURLTests(unittest.TestCase):

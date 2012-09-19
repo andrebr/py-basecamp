@@ -8,11 +8,11 @@ import basecamp.api
 
 from nose.tools import raises
 
-from .base import RequestMock
+from .base import BasecampBaseTest
 from basecamp.exceptions import BasecampAPIError
 
 
-class Auth(unittest.TestCase):
+class Auth(BasecampBaseTest):
     """
     Test the Auth class.
     """
@@ -42,9 +42,7 @@ class Auth(unittest.TestCase):
         Test getting the token, but with a bad response.
         """
         with fudge.patch('basecamp.base.Base.post') as fake_post:
-            mock = RequestMock
-            mock.status_code = 400
-            mock.content = json.dumps({
+            mock = self.setup_mock(400, {
                 'error': 'This verification code was already used. '
                          'Verification codes are single-use'})
 
@@ -63,11 +61,7 @@ class Auth(unittest.TestCase):
         }
 
         with fudge.patch('basecamp.base.Base.post') as fake_post:
-            mock = RequestMock
-            mock.status_code = 200
-            mock.content = json.dumps(content)
-
-            fake_post.is_callable().returns(mock)
+            fake_post.is_callable().returns(self.setup_mock(200, content))
             self.assertEquals(
                 self.auth.get_token('foobar'),
                 content)

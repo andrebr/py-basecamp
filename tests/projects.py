@@ -9,11 +9,11 @@ import basecamp.api
 
 from nose.tools import raises
 
-from .base import RequestMock
+from .base import BasecampBaseTest
 from basecamp.exceptions import BasecampAPIError
 
 
-class Projects(unittest.TestCase):
+class Projects(BasecampBaseTest):
     """
     Projects tests.
     """
@@ -49,11 +49,7 @@ class Projects(unittest.TestCase):
          ]
 
         with fudge.patch('basecamp.base.Base.get') as fake_get:
-            mock = RequestMock
-            mock.status_code = 200
-            mock.content = json.dumps(response)
-
-            fake_get.is_callable().returns(mock)
+            fake_get.is_callable().returns(self.setup_mock(200, response))
 
             projects = basecamp.api.Project(
                 self.url, self.token, self.refresh_token)
@@ -67,10 +63,8 @@ class Projects(unittest.TestCase):
         """
         # test a 404 error
         with fudge.patch('basecamp.base.Base.get') as fake_get:
-            mock = RequestMock
-            mock.status_code = 404
-            mock.content = json.dumps({'error': 'something went wrong'})
-
+            mock = self.setup_mock(404,
+                {'error': 'something went wrong'})
             fake_get.is_callable().returns(mock)
 
             projects = basecamp.api.Project(
@@ -93,11 +87,7 @@ class Projects(unittest.TestCase):
         }
 
         with fudge.patch('basecamp.base.Base.post') as fake_post:
-            mock = RequestMock
-            mock.status_code = 201
-            mock.content = json.dumps(response)
-
-            fake_post.is_callable().returns(mock)
+            fake_post.is_callable().returns(self.setup_mock(201, response))
 
             project = basecamp.api.Project(
                 self.url, self.token, self.refresh_token)
@@ -114,10 +104,7 @@ class Projects(unittest.TestCase):
         """
 
         with fudge.patch('basecamp.base.Base.post') as fake_post:
-            mock = RequestMock
-            mock.status_code = 403
-
-            fake_post.is_callable().returns(mock)
+            fake_post.is_callable().returns(self.setup_mock(403))
 
             project = basecamp.api.Project(
                 self.url, self.token, self.refresh_token)
@@ -183,11 +170,7 @@ class Projects(unittest.TestCase):
         }
 
         with fudge.patch('basecamp.base.Base.get') as fake_get:
-            mock = RequestMock
-            mock.status_code = 200
-            mock.content = json.dumps(response)
-
-            fake_get.is_callable().returns(mock)
+            fake_get.is_callable().returns(self.setup_mock(200, response))
 
             projects = basecamp.api.Project(
                 self.url, self.token, self.refresh_token)
@@ -204,11 +187,7 @@ class Projects(unittest.TestCase):
         response = {'error': 'no permission'}
 
         with fudge.patch('basecamp.base.Base.get') as fake_get:
-            mock = RequestMock
-            mock.status_code = 403
-            mock.content = json.dumps(response)
-
-            fake_get.is_callable().returns(mock)
+            fake_get.is_callable().returns(self.setup_mock(403, response))
 
             projects = basecamp.api.Project(
                 self.url, self.token, self.refresh_token)
@@ -223,11 +202,7 @@ class Projects(unittest.TestCase):
         response = {'id': 1, 'name': 'foobar', 'description': 'something'}
 
         with fudge.patch('basecamp.base.Base.put') as fake_put:
-            mock = RequestMock
-            mock.status_code = 200
-            mock.content = json.dumps(response)
-
-            fake_put.is_callable().returns(mock)
+            fake_put.is_callable().returns(self.setup_mock(200, response))
 
             project = basecamp.api.Project(
                 self.url, self.token, self.refresh_token)
@@ -244,10 +219,7 @@ class Projects(unittest.TestCase):
         """
 
         with fudge.patch('basecamp.base.Base.put') as fake_put:
-            mock = RequestMock
-            mock.status_code = 403
-
-            fake_put.is_callable().returns(mock)
+            fake_put.is_callable().returns(self.setup_mock(403))
 
             project = basecamp.api.Project(
                 self.url, self.token, self.refresh_token)
@@ -266,10 +238,8 @@ class Projects(unittest.TestCase):
         }
 
         with fudge.patch('basecamp.base.Base.put') as fake_put:
-            mock = RequestMock
-            mock.status_code = 200
-            mock.content = json.dumps(response)
-            fake_put.is_callable().returns(mock)
+            fake_put.is_callable().returns(
+                self.setup_mock(200, response))
 
             project = basecamp.api.Project(
                 self.url, self.token, self.refresh_token)
@@ -292,10 +262,7 @@ class Projects(unittest.TestCase):
         }
 
         with fudge.patch('basecamp.base.Base.put') as fake_put:
-            mock = RequestMock
-            mock.status_code = 200
-            mock.content = json.dumps(response)
-            fake_put.is_callable().returns(mock)
+            fake_put.is_callable().returns(self.setup_mock(200, response))
 
             project = basecamp.api.Project(
                 self.url, self.token, self.refresh_token)
@@ -309,9 +276,7 @@ class Projects(unittest.TestCase):
         permission to archive a project tries to do so.
         """
         with fudge.patch('basecamp.base.Base.put') as fake_put:
-            mock = RequestMock
-            mock.status_code = 403
-            fake_put.is_callable().returns(mock)
+            fake_put.is_callable().returns(self.setup_mock(403))
 
             project = basecamp.api.Project(
                 self.url, self.token, self.refresh_token)
@@ -323,9 +288,7 @@ class Projects(unittest.TestCase):
         Delete a project
         """
         with fudge.patch('basecamp.base.Base.delete') as fake_delete:
-            mock = RequestMock
-            mock.status_code = 204
-            fake_delete.is_callable().returns(mock)
+            fake_delete.is_callable().returns(self.setup_mock(204))
 
             project = basecamp.api.Project(
                 self.url, self.token, self.refresh_token)
@@ -339,9 +302,7 @@ class Projects(unittest.TestCase):
         delete a project.
         """
         with fudge.patch('basecamp.base.Base.delete') as fake_delete:
-            mock = RequestMock
-            mock.status_code = 403
-            fake_delete.is_callable().returns(mock)
+            fake_delete.is_callable().returns(self.setup_mock(403))
 
             project = basecamp.api.Project(
                 self.url, self.token, self.refresh_token)
