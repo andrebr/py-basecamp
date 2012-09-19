@@ -98,6 +98,18 @@ class Document(Basecamp):
         :param title: title of the document.
         :param content: content of the new document.
         :rtype dictionary: dictionary representation of the new document.
+
+        >>> import basecamp.api
+        >>> url = 'https://basecamp.com/1/api/v1'
+        >>> token = 'foo'
+        >>> refresh_token = 'bar'
+        >>> documents = basecamp.api.Document(url, token, refresh_token)
+        >>> documents.create(22, 'Cole Porter Songs', 'My favorite songs.')
+
+        .. note::
+
+            The JSON response will look similar to getting details of a
+            document from :meth:`fetch`
         """
 
         self.endpoint = 'projects/{0}/documents.json'.format(project_id)

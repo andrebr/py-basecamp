@@ -86,3 +86,37 @@ class Documents(BasecampBaseTest):
             documents = basecamp.api.Document(
                 self.url, self.token, self.refresh_token)
             documents.fetch(project_id=1, document_id=1)
+
+    def test_create_document(self):
+        """
+        Test creating a new document.
+        """
+        response = {
+            'id': 8675309,
+            'project_id': 66,
+            'name': 'Jenny',
+            'content': 'I got it!<br>I got it!'
+        }
+
+        with fudge.patch('basecamp.base.Base.post') as fake_post:
+            fake_post.is_callable().returns(self.setup_mock(201, response))
+
+            document = basecamp.api.Document(
+                self.url, self.token, self.refresh_token)
+
+            self.assertEquals(
+                document.create(66, 'Jenny', 'I got it!<br>I got it!'),
+                response)
+
+    @raises(BasecampAPIError)
+    def test_create_document_no_permission(self):
+        """
+        Test creating a new document.
+        """
+        with fudge.patch('basecamp.base.Base.post') as fake_post:
+            fake_post.is_callable().returns(self.setup_mock(403))
+
+            document = basecamp.api.Document(
+                self.url, self.token, self.refresh_token)
+
+            document.create(66, 'Jenny', 'I got it!<br>I got it!')
