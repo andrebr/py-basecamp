@@ -5,8 +5,8 @@ Documents
 =========
 
 
-
-https://github.com/37signals/bcx-api/blob/master/sections/documents.md
+For more information, please see the official Basecamp API documentation on
+`documents <https://github.com/37signals/bcx-api/blob/master/sections/documents.md>`_
 """
 import json
 from .base import Basecamp
@@ -136,6 +136,20 @@ class Document(Basecamp):
         :param document_id: integer of document id
         :param title: string of title
         :param content: string of document content
+        :rtype dictionary: Document information
+
+        >>> import basecamp.api
+        >>> url = 'https://basecamp.com/1/api/v1'
+        >>> token = 'foo'
+        >>> refresh_token = 'bar'
+        >>> documents = basecamp.api.Document(url, token, refresh_token)
+        >>> documents.update(22, 244, 'foo title', 'bar content')
+
+        .. note::
+
+            The JSON response will look similar to getting details of a
+            document from :meth:`fetch`
+
         """
         self.endpoint = 'projects/{0}/documents/{1}.json'.format(
             project_id, document_id)
@@ -147,17 +161,31 @@ class Document(Basecamp):
         request = self.put(self.construct_url(),
             payload=json.dumps(data))
 
-        if request.status_coee == 200:
+        if request.status_code == 200:
             return json.loads(request.content)
 
         raise BasecampAPIError()
 
     def remove(self, project_id, document_id):
         """
-        Delete a document.
+        Delete a document from the project/account
 
         :param project_id: integer of project id
         :param document_id: integer of document id to remove
+        :rtype boolean: ``True`` if the document is removed.
+
+        >>> import basecamp.api
+        >>> url = 'https://basecamp.com/1/api/v1'
+        >>> token = 'foo'
+        >>> refresh_token = 'bar'
+        >>> documents = basecamp.api.Document(url, token, refresh_token)
+        >>> documents.remove(22, 244)
+
+        .. note::
+
+            If the document is not removed, or if a problem occurs, a
+            :class::`BasecampAPIError` exception will be raised.
+
         """
         self.endpoint = 'projects/{0}/{1}.json'.format(
             project_id, document_id)
