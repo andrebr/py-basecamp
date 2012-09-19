@@ -63,7 +63,26 @@ class Documents(BasecampBaseTest):
                 documents.fetch(project_id=1, document_id=1),
                 self.documents_list[0])
 
+    @raises(BasecampAPIError)
+    def test_fetch_document_but_no_project(self):
+        """
+        Ensure an exception is thrown if `document_id` is passed to `fetch()`
+        but no `project_id` is included
+        """
 
+        documents = basecamp.api.Document(
+            self.url, self.token, self.refresh_token)
+        documents.fetch(document_id=1)
 
+    @raises(BasecampAPIError)
+    def test_fetch_test_404(self):
+        """
+        Test what happens when a 404 is returned.
+        """
+        with fudge.patch('basecamp.base.Base.get') as fake_get:
+            mock = self.setup_mock(404)
+            fake_get.is_callable().returns(mock)
 
-
+            documents = basecamp.api.Document(
+                self.url, self.token, self.refresh_token)
+            documents.fetch(project_id=1, document_id=1)
