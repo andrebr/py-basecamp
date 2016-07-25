@@ -75,8 +75,7 @@ class Project(Basecamp):
             description=description
         )
 
-        request = self.post(self.construct_url(),
-            payload=json.dumps(data))
+        request = self.post(self.construct_url(), payload=json.dumps(data))
 
         if request.status_code == 201:
             return json.loads(request.content)
@@ -110,8 +109,7 @@ class Project(Basecamp):
             description=description
         )
 
-        request = self.put(self.construct_url(),
-            payload=json.dumps(data))
+        request = self.put(self.construct_url(), payload=json.dumps(data))
 
         if request.status_code == 200:
             return json.loads(request.content)
@@ -138,8 +136,7 @@ class Project(Basecamp):
         """
         self.endpoint = 'projects/{0}'.format(project_id)
         data = dict(archived=archive)
-        request = self.put(self.construct_url(),
-            payload=json.dumps(data))
+        request = self.put(self.construct_url(), payload=json.dumps(data))
 
         if request.status_code == 200:
             json_data = json.loads(request.content)
@@ -167,8 +164,41 @@ class Project(Basecamp):
         >>> api = basecamp.api.Project(account_url, access_token)
         >>> projects = projects.remove(675)
         """
-        self.endpoint = 'projects/{0}'.format(project_id)
+        self.endpoint = 'projects/{0}.json'.format(project_id)
         request = self.delete(self.construct_url())
+
+        if request.status_code == 204:
+            return True
+        elif request.status_code == 403:
+            raise BasecampAPIError()
+
+        raise BasecampAPIError()
+
+    # Move to todo_list.
+    def reorder_todo_lists(self, project_id, todo_list_ids):
+        """
+        Remove a todo list
+
+        :param project_id: ID of project
+        :param todo_list_ids: ids of the todo list to in order.
+        :rtype: True if successfully reordered.
+
+        >>> import basecamp.api
+        >>> account_url = 'https://basecamp.com/12345/api/v1'
+        >>> access_token = 'access_token'
+        >>> api = basecamp.api.todo list(account_url, access_token)
+        >>> reordered = api.reorder([675, 674, 673])
+        """
+        self.endpoint = 'projects/{0}/todo_lists/reorder'.format(project_id)
+        data = [
+            {
+                'todo-list': {
+                    'id': x
+                }
+            } for x in todo_list_ids
+        ]
+
+        request = self.put(self.construct_url(), paylouad=json.dumps(data))
 
         if request.status_code == 204:
             return True

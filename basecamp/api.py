@@ -14,3 +14,6 @@ from .projects import Project
 from .people import Person
 from .documents import Document
 from .base import Basecamp
+from .todo_lists import TodoList
+from .todos import Todo
+from .comments import Comment

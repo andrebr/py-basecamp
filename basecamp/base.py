@@ -10,7 +10,7 @@ class Base(object):
     """
 
     headers = {
-        'Content-type': 'application/json; charset=utf-8',
+        'Content-Type': 'application/json; charset=utf-8',
     }
 
     def get(self, url, headers=None):
