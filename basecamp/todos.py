@@ -68,7 +68,10 @@ class Todo(Basecamp):
         if request.status_code == 200:
             return json.loads(request.content)
 
-        raise BasecampAPIError(json.loads(request.content).get('error'))
+        try:
+            raise BasecampAPIError(json.loads(request.content).get('error'))
+        except:
+            pass
 
     def complete(self, todo_item_id):
         """
