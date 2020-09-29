@@ -50,19 +50,19 @@ class Documents(BasecampBaseTest):
             mock = self.setup_mock(200, self.documents_list)
             fake_get.is_callable().returns(mock)
 
-            self.assertEquals(self.document.fetch(), self.documents_list)
+            self.assertEqual(self.document.fetch(), self.documents_list)
 
             # Get documents for a single project
             mock = self.setup_mock(200, self.documents_list)
             fake_get.is_callable().returns(mock)
-            self.assertEquals(
+            self.assertEqual(
                 self.document.fetch(project_id=1), self.documents_list)
 
             # Get a specific document from a project
             mock = self.setup_mock(200, self.documents_list[0])
             fake_get.is_callable().returns(mock)
 
-            self.assertEquals(
+            self.assertEqual(
                 self.document.fetch(project_id=1, document_id=1),
                 self.documents_list[0])
 
@@ -99,7 +99,7 @@ class Documents(BasecampBaseTest):
         with fudge.patch('basecamp.base.Base.post') as fake_post:
             fake_post.is_callable().returns(self.setup_mock(201, response))
 
-            self.assertEquals(
+            self.assertEqual(
                 self.document.create(66, 'Jenny', 'I got it!<br>I got it!'),
                 response)
 
@@ -124,7 +124,7 @@ class Documents(BasecampBaseTest):
 
         with fudge.patch('basecamp.base.Base.post') as fake_put:
             fake_put.is_callable().returns(self.setup_mock(501, response))
-            self.assertEquals(self.document.create(66, 'foobar', 'baz'),
+            self.assertEqual(self.document.create(66, 'foobar', 'baz'),
                 response)
 
     def test_update_document(self):
@@ -138,7 +138,7 @@ class Documents(BasecampBaseTest):
 
         with fudge.patch('basecamp.base.Base.put') as fake_put:
             fake_put.is_callable().returns(self.setup_mock(200, response))
-            self.assertEquals(self.document.update(1, 2, 'foobar', 'baz'),
+            self.assertEqual(self.document.update(1, 2, 'foobar', 'baz'),
                 response)
 
     @raises(BasecampAPIError)
@@ -153,7 +153,7 @@ class Documents(BasecampBaseTest):
 
         with fudge.patch('basecamp.base.Base.put') as fake_put:
             fake_put.is_callable().returns(self.setup_mock(403, response))
-            self.assertEquals(self.document.update(1, 2, 'foobar', 'baz'),
+            self.assertEqual(self.document.update(1, 2, 'foobar', 'baz'),
                 response)
 
     def test_remove_document(self):

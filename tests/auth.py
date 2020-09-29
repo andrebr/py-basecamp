@@ -33,7 +33,7 @@ class Auth(BasecampBaseTest):
         """
 
         # pylint: disable=C0301
-        self.assertEquals(self.auth.launchpad_url,
+        self.assertEqual(self.auth.launchpad_url,
             'https://launchpad.37signals.com/authorization/new?redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fauth-return%2F&type=web_server&client_id=12345asdfg')
 
     @raises(BasecampAPIError)
@@ -62,6 +62,6 @@ class Auth(BasecampBaseTest):
 
         with fudge.patch('basecamp.base.Base.post') as fake_post:
             fake_post.is_callable().returns(self.setup_mock(200, content))
-            self.assertEquals(
+            self.assertEqual(
                 self.auth.get_token('foobar'),
                 content)

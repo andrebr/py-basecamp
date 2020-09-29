@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import requests
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from .exceptions import (ImproperlyConfigured, BasecampAPIError)
 
 
@@ -87,5 +87,5 @@ class Basecamp(Base):
         return '{0}/{1}?{2}'.format(
             self.account_url,
             self.endpoint,
-            urllib.urlencode({'access_token': self.access_token})
+            urllib.parse.urlencode({'access_token': self.access_token})
         )

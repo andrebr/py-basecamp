@@ -70,7 +70,7 @@ Here's a basic example of how this could work in a Flask application.
         # do things now that you have a token.
 
 """
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import json
 
 from .base import Base
@@ -112,7 +112,7 @@ class Auth(Base):
         """
         return '{0}authorization/new?{1}'.format(
             self.auth_base_url,
-            urllib.urlencode(self.query_args))
+            urllib.parse.urlencode(self.query_args))
 
     def get_token(self, code):
         """

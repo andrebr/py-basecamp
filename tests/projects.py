@@ -54,7 +54,7 @@ class Projects(BasecampBaseTest):
             projects = basecamp.api.Project(
                 self.url, self.token, self.refresh_token)
 
-            self.assertEquals(projects.fetch(), response)
+            self.assertEqual(projects.fetch(), response)
 
     @raises(BasecampAPIError)
     def test_list_error(self):
@@ -94,7 +94,7 @@ class Projects(BasecampBaseTest):
 
             new_project = project.create('Some Project', 'Project Description')
 
-            self.assertEquals(new_project, response)
+            self.assertEqual(new_project, response)
 
     @raises(BasecampAPIError)
     def test_create_no_permissions(self):
@@ -175,7 +175,7 @@ class Projects(BasecampBaseTest):
             projects = basecamp.api.Project(
                 self.url, self.token, self.refresh_token)
 
-            self.assertEquals(projects.fetch(project=9), response)
+            self.assertEqual(projects.fetch(project=9), response)
 
     @raises(BasecampAPIError)
     def test_detail_error(self):
@@ -207,7 +207,7 @@ class Projects(BasecampBaseTest):
             project = basecamp.api.Project(
                 self.url, self.token, self.refresh_token)
 
-            self.assertEquals(project.update(1, 'foobar', 'something'),
+            self.assertEqual(project.update(1, 'foobar', 'something'),
                 response)
 
     @raises(BasecampAPIError)
@@ -244,7 +244,7 @@ class Projects(BasecampBaseTest):
             project = basecamp.api.Project(
                 self.url, self.token, self.refresh_token)
 
-            self.assertEquals(project.archive(9, archive=True), response)
+            self.assertEqual(project.archive(9, archive=True), response)
 
     @raises(BasecampAPIError)
     def test_archive_but_not_archived(self):
@@ -281,7 +281,7 @@ class Projects(BasecampBaseTest):
             project = basecamp.api.Project(
                 self.url, self.token, self.refresh_token)
 
-            self.assertEquals(project.archive(9, archive=True), response)
+            self.assertEqual(project.archive(9, archive=True), response)
 
     def test_delete(self):
         """

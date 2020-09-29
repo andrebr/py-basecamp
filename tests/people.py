@@ -52,7 +52,7 @@ class People(BasecampBaseTest):
             fake_get.is_callable().returns(
                 self.setup_mock(200, self.response))
 
-            self.assertEquals(self.people.fetch(), self.response)
+            self.assertEqual(self.people.fetch(), self.response)
 
     @raises(BasecampAPIError)
     def test_fetch_people_list_no_permission(self):
@@ -65,7 +65,7 @@ class People(BasecampBaseTest):
             fake_get.is_callable().returns(
                 self.setup_mock(403, self.response))
 
-            self.assertEquals(self.people.fetch(), self.response)
+            self.assertEqual(self.people.fetch(), self.response)
 
     def test_fetch_single_person(self):
         """
@@ -75,5 +75,5 @@ class People(BasecampBaseTest):
             fake_get.is_callable().returns(
                 self.setup_mock(200, self.response[0]))
 
-            self.assertEquals(
+            self.assertEqual(
                 self.people.fetch(person='me'), self.response[0])

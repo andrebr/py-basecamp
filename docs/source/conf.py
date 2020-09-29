@@ -46,8 +46,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'py-basecamp'
-copyright = u'2012, Greg Aker, nGen Works'
+project = 'py-basecamp'
+copyright = '2012, Greg Aker, nGen Works'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -193,8 +193,8 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'py-basecamp.tex', u'py-basecamp Documentation',
-   u'Greg Aker, nGen Works', 'manual'),
+  ('index', 'py-basecamp.tex', 'py-basecamp Documentation',
+   'Greg Aker, nGen Works', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -223,8 +223,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'py-basecamp', u'py-basecamp Documentation',
-     [u'Greg Aker, nGen Works'], 1)
+    ('index', 'py-basecamp', 'py-basecamp Documentation',
+     ['Greg Aker, nGen Works'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -237,8 +237,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'py-basecamp', u'py-basecamp Documentation',
-   u'Greg Aker, nGen Works', 'py-basecamp', 'One line description of project.',
+  ('index', 'py-basecamp', 'py-basecamp Documentation',
+   'Greg Aker, nGen Works', 'py-basecamp', 'One line description of project.',
    'Miscellaneous'),
 ]
 

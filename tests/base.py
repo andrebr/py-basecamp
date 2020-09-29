@@ -61,7 +61,7 @@ class BuildURLTests(unittest.TestCase):
 
         some_api = Basecamp(account_url, access_token)
         some_api.endpoint = 'foobars'
-        self.assertEquals(
+        self.assertEqual(
             some_api.construct_url(),
             'http://example.com/foobars?access_token=abceasyas123')
 
@@ -74,6 +74,6 @@ class BuildURLTests(unittest.TestCase):
 
         some_api = Basecamp(account_url, access_token)
         some_api.endpoint = '/foobars/'
-        self.assertEquals(
+        self.assertEqual(
             some_api.construct_url(),
             'http://example.com/foobars?access_token=abceasyas123')
